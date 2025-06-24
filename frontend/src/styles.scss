@@ -1,0 +1,564 @@
+/* You can add global styles to this file, and also import other style files */
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import "primeicons/primeicons.css";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* PrimeNG theme variables for version 19+ */
+:root {
+  /* Modern Color Palette */
+  --primary-color: #6366F1;
+  --primary-color-light: rgba(99, 102, 241, 0.15);
+  --primary-dark: #4F46E5;
+  --primary-hover: #818CF8;
+  
+  --success-color: #10B981;
+  --success-light: rgba(16, 185, 129, 0.15);
+  --warning-color: #F59E0B;
+  --warning-light: rgba(245, 158, 11, 0.15);
+  --danger-color: #EF4444;
+  --danger-light: rgba(239, 68, 68, 0.15);
+  --info-color: #3B82F6;
+  --info-light: rgba(59, 130, 246, 0.15);
+  
+  /* Income, Expense Colors */
+  --income-color: #10B981;
+  --expense-color: #EF4444;
+  --savings-color: #6366F1;
+  
+  /* Neutrals */
+  --text-color: #1E293B;
+  --text-color-secondary: #64748B;
+  --text-light: #94A3B8;
+  --text-muted: #CBD5E1;
+  
+  /* Surfaces */
+  --surface-ground: #F8FAFC;
+  --surface-section: #F1F5F9;
+  --surface-card: #FFFFFF;
+  --surface-overlay: #FFFFFF;
+  --surface-border: #E2E8F0;
+  --surface-hover: #F1F5F9;
+  
+  /* Font */
+  --font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  /* Radius */
+  --border-radius-sm: 0.25rem;
+  --border-radius: 0.5rem;
+  --border-radius-lg: 0.75rem;
+  --border-radius-xl: 1rem;
+  --border-radius-full: 9999px;
+  
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Common element styles for dropdown/dialog backgrounds */
+  --dropdown-background: #FFFFFF;
+  --dropdown-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  --dropdown-border: 1px solid rgba(0, 0, 0, 0.05);
+  
+  /* Card shadow for all components */
+  --card-shadow: var(--shadow-md);
+  --card-shadow-hover: var(--shadow-lg);
+}
+
+/* Dark Mode Theme Variables */
+.dark-mode {
+  /* Dark Mode Color Palette */
+  --primary-color: #818CF8; 
+  --primary-color-light: rgba(129, 140, 248, 0.15);
+  --primary-dark: #6366F1;
+  --primary-hover: #A5B4FC;
+  
+  --success-color: #34D399;
+  --success-light: rgba(52, 211, 153, 0.15);
+  --warning-color: #FBBF24;
+  --warning-light: rgba(251, 191, 36, 0.15);
+  --danger-color: #F87171;
+  --danger-light: rgba(248, 113, 113, 0.15);
+  --info-color: #60A5FA;
+  --info-light: rgba(96, 165, 250, 0.15);
+  
+  /* Income, Expense Colors */
+  --income-color: #34D399;
+  --expense-color: #F87171;
+  --savings-color: #818CF8;
+  
+  /* Neutrals */
+  --text-color: #F1F5F9;
+  --text-color-secondary: #CBD5E1;
+  --text-light: #94A3B8;
+  --text-muted: #64748B;
+  
+  /* Surfaces */
+  --surface-ground: #0F172A;
+  --surface-section: #1E293B;
+  --surface-card: #1E293B;
+  --surface-overlay: #1E293B;
+  --surface-border: #334155;
+  --surface-hover: #334155;
+
+  /* Keep dropdowns and dialogs with white background even in dark mode */
+  --dropdown-background: #1E293B;
+  --dropdown-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  --dropdown-border: 1px solid #334155;
+}
+
+/* Base styling */
+body {
+  font-family: var(--font-family);
+  color: var(--text-color);
+  background-color: var(--surface-ground);
+  margin: 0;
+  padding: 0;
+  transition: background-color var(--transition);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+}
+
+a {
+  color: var(--primary-color);
+  transition: color var(--transition-fast);
+  text-decoration: none;
+  
+  &:hover {
+    color: var(--primary-hover);
+  }
+}
+
+.income {
+  color: var(--income-color);
+}
+
+.expense {
+  color: var(--expense-color);
+}
+
+.savings {
+  color: var(--savings-color);
+}
+
+.positive {
+  color: var(--success-color);
+}
+
+.negative {
+  color: var(--danger-color);
+}
+
+/* Card and container styles */
+.card {
+  background: var(--surface-card);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  transition: transform var(--transition), box-shadow var(--transition);
+  border: none;
+  
+  &:hover {
+    box-shadow: var(--shadow-md);
+  }
+}
+
+.container {
+  padding: 1.5rem;
+}
+
+/* Animation classes */
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.4s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(var(--primary-color-rgb), 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(var(--primary-color-rgb), 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(var(--primary-color-rgb), 0);
+  }
+}
+
+/* Enhanced PrimeNG Components Styling */
+
+/* White background for all dropdown panels and dialogs */
+.p-dropdown-panel,
+.p-calendar-panel,
+.p-dialog,
+.p-overlaypanel,
+.p-toast,
+.p-confirm-dialog {
+  background-color: var(--dropdown-background) !important;
+  border-radius: var(--border-radius) !important;
+  box-shadow: var(--dropdown-shadow) !important;
+  border: var(--dropdown-border) !important;
+  
+  .p-dropdown-header,
+  .p-dialog-header,
+  .p-dialog-footer {
+    background-color: var(--dropdown-background) !important;
+    border-color: var(--surface-border) !important;
+  }
+  
+  .p-dropdown-items,
+  .p-dialog-content {
+    background-color: var(--dropdown-background) !important;
+  }
+}
+
+/* Button styling */
+.p-button {
+  border-radius: var(--border-radius) !important;
+  transition: all var(--transition-fast) !important;
+    &.p-button-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
+    border: none !important;
+    
+    &:hover {
+      background: linear-gradient(135deg, var(--primary-hover), var(--primary-color)) !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2) !important;
+    }
+  }
+  
+  &.p-button-success {
+    background: linear-gradient(135deg, var(--success-color), var(--success-color)) !important;
+    border: none !important;
+    
+    &:hover {
+      background: linear-gradient(135deg, var(--success-light), var(--success-color)) !important;
+      transform: translateY(-2px);
+    }
+  }
+  
+  &.p-button-danger {
+    background: linear-gradient(135deg, var(--danger-color), var(--danger-color)) !important;
+    border: none !important;
+    
+    &:hover {
+      background: linear-gradient(135deg, var(--danger-light), var(--danger-color)) !important;
+      transform: translateY(-2px);
+    }
+  }
+  
+  &.p-button-text {
+    &:hover {
+      background-color: rgba(var(--primary-color-rgb), 0.1) !important;
+      color: var(--primary-color) !important;
+    }
+  }
+}
+
+/* Enhanced Navigation Buttons */
+.main-nav-button {
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all var(--transition);
+  border: none;
+  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
+  
+  i {
+    font-size: 1.2rem;
+  }
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(99, 102, 241, 0.3);
+    background: linear-gradient(135deg, var(--primary-hover), var(--primary-color));
+  }
+  
+  &:active {
+    transform: translateY(-1px);
+  }
+  
+  &.dashboard-btn {
+    background: linear-gradient(135deg, #3B82F6, #2563EB);
+    &:hover {
+      background: linear-gradient(135deg, #60A5FA, #3B82F6);
+    }
+  }
+  
+  &.transactions-btn {
+    background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+    &:hover {
+      background: linear-gradient(135deg, #A78BFA, #8B5CF6);
+    }
+  }
+  
+  &.analytics-btn {
+    background: linear-gradient(135deg, #EC4899, #DB2777);
+    &:hover {
+      background: linear-gradient(135deg, #F472B6, #EC4899);
+    }
+  }
+  
+  &.settings-btn {
+    background: linear-gradient(135deg, #10B981, #059669);
+    &:hover {
+      background: linear-gradient(135deg, #34D399, #10B981);
+    }
+  }
+}
+
+/* Responsive breakpoints */
+@media (max-width: 991.98px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+  
+  .mobile-full-width {
+    width: 100% !important;
+  }
+  
+  .mobile-text-center {
+    text-align: center !important;
+  }
+}
+
+/* Custom tooltip */
+.custom-tooltip {
+  background-color: var(--surface-overlay);
+  color: var(--text-color);
+  border-radius: var(--border-radius);
+  padding: 0.5rem 0.75rem;
+  box-shadow: var(--shadow-md);
+  font-size: 0.875rem;
+}
+
+/* Custom dialog styling */
+.transaction-dialog,
+.p-dialog {
+  .p-dialog-header {
+    padding: 1.25rem;
+    border-bottom: 1px solid var(--surface-border);
+    border-top-right-radius: var(--border-radius);
+    border-top-left-radius: var(--border-radius);
+    
+    .p-dialog-title {
+      font-weight: 600;
+      font-size: 1.25rem;
+      background: linear-gradient(to right, var(--primary-color), var(--primary-color-light));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+  
+  .p-dialog-content {
+    padding: 1.25rem;
+    background: var(--dropdown-background);
+  }
+  
+  .p-dialog-footer {
+    padding: 1.25rem;
+    border-top: 1px solid var(--surface-border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+}
+
+/* Dropdown enhancements */
+.p-dropdown {
+  border-radius: var(--border-radius);
+  transition: all var(--transition-fast);
+  
+  &:focus {
+    box-shadow: 0 0 0 2px var(--primary-color-light);
+    border-color: var(--primary-color) !important;
+  }
+  
+  &:hover {
+    border-color: var(--primary-hover) !important;
+  }
+  
+  .p-dropdown-trigger {
+    color: var(--text-color-secondary);
+  }
+}
+
+.p-dropdown-panel {
+  .p-dropdown-items {
+    .p-dropdown-item {
+      padding: 0.75rem 1rem;
+      color: var(--text-color);
+      transition: all var(--transition-fast);
+      
+      &:hover {
+        background-color: var(--surface-hover);
+        color: var(--primary-color);
+      }
+      
+      &.p-highlight {
+        background-color: var(--primary-color-light);
+        color: var(--primary-color);
+      }
+    }
+  }
+}
+
+/* Calendar dropdown styling */
+.p-calendar-panel {
+  .p-datepicker {
+    padding: 0.5rem;
+    
+    .p-datepicker-header {
+      padding: 0.5rem;
+      border-bottom: 1px solid var(--surface-border);
+      background-color: var(--dropdown-background);
+    }
+    
+    .p-datepicker-calendar {
+      th {
+        padding: 0.5rem;
+      }
+      
+      td {
+        padding: 0.2rem;
+        
+        span {
+          width: 2rem;
+          height: 2rem;
+          border-radius: var(--border-radius-full);
+          transition: all var(--transition-fast);
+          
+          &:hover {
+            background-color: var(--surface-hover);
+          }
+          
+          &.p-highlight {
+            background-color: var(--primary-color);
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Utility classes */
+.w-100 {
+  width: 100% !important;
+}
+
+.mb-1 {
+  margin-bottom: 0.25rem !important;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem !important;
+}
+
+.mb-3 {
+  margin-bottom: 1rem !important;
+}
+
+.mb-4 {
+  margin-bottom: 1.5rem !important;
+}
+
+.mb-5 {
+  margin-bottom: 3rem !important;
+}
+
+.mt-1 {
+  margin-top: 0.25rem !important;
+}
+
+.mt-2 {
+  margin-top: 0.5rem !important;
+}
+
+.mt-3 {
+  margin-top: 1rem !important;
+}
+
+.mt-4 {
+  margin-top: 1.5rem !important;
+}
+
+.mt-5 {
+  margin-top: 3rem !important;
+}
+
+/* Enhanced scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-section);
+  border-radius: var(--border-radius-full);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: var(--border-radius-full);
+  
+  &:hover {
+    background: var(--text-color-secondary);
+  }
+}

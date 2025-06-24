@@ -1,0 +1,99 @@
+<footer class="app-footer">
+  <div class="footer-wave">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
+    </svg>
+  </div>
+
+  <div class="footer-container">
+    <div class="footer-section brand-section">
+      <div class="footer-brand">
+        <div class="brand-logo">
+          <i class="pi pi-chart-line footer-icon"></i>
+        </div>
+        <span class="footer-title">{{brandName}}</span>
+      </div>
+      <p class="footer-desc">{{brandDescription}}</p>
+      <div class="app-badges">
+        <a href="#" class="app-badge">
+          <i class="pi pi-apple"></i>
+          <span>App Store</span>
+        </a>
+        <a href="#" class="app-badge">
+          <i class="pi pi-android"></i>
+          <span>Google Play</span>
+        </a>
+      </div>
+    </div>    <div class="footer-section">
+      <h4 class="footer-heading">Quick Links</h4>
+      <ul class="footer-links">
+        <li>
+          <a [routerLink]="['/']" class="quick-link dashboard-link">
+            <i class="pi pi-home"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/transactions']" class="quick-link transactions-link">
+            <i class="pi pi-list"></i>
+            <span>Transactions</span>
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/analytics']" class="quick-link analytics-link">
+            <i class="pi pi-chart-bar"></i>
+            <span>Analytics</span>
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/settings']" class="quick-link settings-link">
+            <i class="pi pi-cog"></i>
+            <span>Settings</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h4 class="footer-heading">Contact</h4>
+      <ul class="footer-links contact-links">
+        <li *ngFor="let item of contactInfo">
+          <i [class]="item.icon"></i>
+          <span>{{item.text}}</span>
+        </li>
+      </ul>
+      <div class="support-button">
+        <button pButton type="button" label="Get Support" icon="pi pi-comments" class="p-button-rounded"></button>
+      </div>
+    </div>
+
+    <div class="footer-section">
+      <h4 class="footer-heading">Stay Connected</h4>
+      <p class="social-text">Follow us on social media for tips and updates</p>
+      <div class="social-links">
+        <a *ngFor="let social of socialLinks" 
+           [href]="social.url" 
+           class="social-link"
+           [pTooltip]="social.label">
+          <i [class]="social.icon"></i>
+        </a>
+      </div>
+      <div class="newsletter">
+        <p class="newsletter-text">Subscribe to our newsletter</p>
+        <div class="newsletter-form">
+          <input type="email" pInputText placeholder="Your email" class="newsletter-input">
+          <button pButton type="button" icon="pi pi-send" class="p-button-rounded"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-bottom-content">
+      <p class="copyright">© {{year}} {{brandName}}. All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a *ngFor="let legal of legalLinks" [href]="legal.url">{{legal.label}}</a>
+      </div>
+    </div>
+  </div>
+</footer>

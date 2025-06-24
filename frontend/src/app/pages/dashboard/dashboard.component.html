@@ -1,0 +1,250 @@
+<div class="dashboard-container animate-fade-in">
+  <div class="dashboard-header">
+    <div class="welcome-section">
+      <h2 class="page-title">Welcome to Your Dashboard</h2>
+      <p class="subtitle">Here's an overview of your financial status</p>
+    </div>
+    <div class="date-range-selector">
+      <p-dropdown [options]="timeRanges" [(ngModel)]="selectedTimeRange" (onChange)="onTimeRangeChange()" placeholder="Select Time Range"></p-dropdown>
+    </div>
+  </div>
+
+  <!-- Quick Navigation Buttons -->
+  <div class="page-navigation-buttons animate-slide-up" style="animation-delay: 0.05s">
+    <a [routerLink]="['/']" class="nav-button dashboard-btn" routerLinkActive="active">
+      <div class="icon-wrapper">
+        <i class="pi pi-home"></i>
+      </div>
+      <span class="button-label">Dashboard</span>
+    </a>
+    <a [routerLink]="['/transactions']" class="nav-button transactions-btn">
+      <div class="icon-wrapper">
+        <i class="pi pi-list"></i>
+      </div>
+      <span class="button-label">Transactions</span>
+    </a>
+    <a [routerLink]="['/analytics']" class="nav-button analytics-btn">
+      <div class="icon-wrapper">
+        <i class="pi pi-chart-bar"></i>
+      </div>
+      <span class="button-label">Analytics</span>
+    </a>
+    <a [routerLink]="['/settings']" class="nav-button settings-btn">
+      <div class="icon-wrapper">
+        <i class="pi pi-cog"></i>
+      </div>
+      <span class="button-label">Settings</span>
+    </a>
+  </div>
+
+  <!-- Financial Summary Cards -->
+  <div class="summary-cards-container">
+    <div class="summary-card income-card animate-slide-up" style="animation-delay: 0.1s">
+      <div class="card-icon-wrapper income-bg">
+        <i class="pi pi-arrow-up"></i>
+      </div>
+      <div class="card-content">
+        <h4 class="card-title">Total Income</h4>
+        <h2 class="card-value income">${{totalIncome.toFixed(2)}}</h2>
+        <div class="card-trend positive">
+          <i class="pi pi-arrow-up"></i>
+          <span>8.5% <small>vs last month</small></span>
+        </div>
+      </div>
+      <div class="card-sparkline">
+        <div class="sparkline-bar" *ngFor="let value of incomeSparkline" [style.height.%]="value"></div>
+      </div>
+    </div>
+    
+    <div class="summary-card expense-card animate-slide-up" style="animation-delay: 0.2s">
+      <div class="card-icon-wrapper expense-bg">
+        <i class="pi pi-arrow-down"></i>
+      </div>
+      <div class="card-content">
+        <h4 class="card-title">Total Expenses</h4>
+        <h2 class="card-value expense">${{totalExpense.toFixed(2)}}</h2>
+        <div class="card-trend negative">
+          <i class="pi pi-arrow-up"></i>
+          <span>4.2% <small>vs last month</small></span>
+        </div>
+      </div>
+      <div class="card-sparkline">
+        <div class="sparkline-bar" *ngFor="let value of expenseSparkline" [style.height.%]="value"></div>
+      </div>
+    </div>
+    
+    <div class="summary-card balance-card animate-slide-up" style="animation-delay: 0.3s">
+      <div class="card-icon-wrapper balance-bg">
+        <i class="pi pi-wallet"></i>
+      </div>
+      <div class="card-content">
+        <h4 class="card-title">Balance</h4>
+        <h2 class="card-value" [ngClass]="balance >= 0 ? 'income' : 'expense'">${{balance.toFixed(2)}}</h2>
+        <div class="card-trend" [ngClass]="balanceTrend >= 0 ? 'positive' : 'negative'">
+          <i [ngClass]="balanceTrend >= 0 ? 'pi pi-arrow-up' : 'pi pi-arrow-down'"></i>
+          <span>{{Math.abs(balanceTrend)}}% <small>vs last month</small></span>
+        </div>
+      </div>
+      <div class="card-sparkline">
+        <div class="sparkline-bar" *ngFor="let value of balanceSparkline" 
+             [style.height.%]="Math.abs(value)" 
+             [ngClass]="value >= 0 ? 'positive-bar' : 'negative-bar'"></div>
+      </div>
+    </div>
+    
+    <div class="summary-card savings-card animate-slide-up" style="animation-delay: 0.4s">
+      <div class="card-icon-wrapper savings-bg">
+        <i class="pi pi-chart-line"></i>
+      </div>
+      <div class="card-content">
+        <h4 class="card-title">Savings Rate</h4>
+        <h2 class="card-value savings">{{savingsRate}}%</h2>
+        <div class="savings-progress">
+          <div class="progress-bar">
+            <div class="progress-value" [style.width.%]="savingsRate"></div>
+          </div>
+          <span class="progress-text">Goal: 25%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="charts-container">
+    <div class="chart-card main-chart animate-slide-up" style="animation-delay: 0.5s">
+      <div class="card-header">
+        <h3 class="card-header-title">Income vs. Expenses</h3>
+        <div class="card-actions">
+          <p-dropdown [options]="chartViewOptions" [(ngModel)]="selectedChartView" (onChange)="updateChartView()" placeholder="View"></p-dropdown>
+        </div>
+      </div>
+      <div class="card-body">
+        <p-chart type="bar" [data]="chartData" [options]="chartOptions"></p-chart>
+      </div>
+    </div>
+    
+    <div class="chart-card side-chart animate-slide-up" style="animation-delay: 0.6s">
+      <div class="card-header">
+        <h3 class="card-header-title">Expense Breakdown</h3>
+        <div class="card-actions">
+          <button pButton type="button" icon="pi pi-filter" class="p-button-text p-button-rounded"></button>
+        </div>
+      </div>
+      <div class="card-body donut-chart">
+        <p-chart type="doughnut" [data]="categoryData" [options]="pieOptions"></p-chart>
+      </div>
+      <div class="category-legend">
+        <div class="legend-item" *ngFor="let category of topCategories; let i = index">
+          <div class="legend-color" [style.background-color]="categoryColors[i]"></div>
+          <span class="legend-label">{{category.name}}</span>
+          <span class="legend-value">{{category.percentage}}%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Transactions -->
+  <div class="transactions-section animate-slide-up" style="animation-delay: 0.7s">
+    <div class="section-header">
+      <h3 class="section-title">Recent Transactions</h3>
+      <div class="section-actions">
+        <button pButton type="button" label="View All" icon="pi pi-arrow-right" class="p-button-text" [routerLink]="['/transactions']"></button>
+      </div>
+    </div>
+    
+    <div class="transactions-table-wrapper">
+      <p-table [value]="recentTransactions" styleClass="transaction-table" [scrollable]="true" scrollHeight="400px">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Type</th>
+            <th>Amount</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-transaction>
+          <tr>
+            <td>
+              <div class="transaction-date">
+                <div class="date-box">
+                  <span class="month">{{transaction.date | date:'MMM'}}</span>
+                  <span class="day">{{transaction.date | date:'dd'}}</span>
+                </div>
+                <span class="year">{{transaction.date | date:'yyyy'}}</span>
+              </div>
+            </td>
+            <td>
+              <div class="transaction-description">
+                <span class="description-text">{{transaction.description}}</span>
+                <span class="transaction-time">{{transaction.date | date:'shortTime'}}</span>
+              </div>
+            </td>
+            <td>
+              <p-tag [value]="transaction.category" 
+                    [severity]="transaction.type === 'INCOME' ? 'success' : 'danger'"></p-tag>
+            </td>
+            <td>
+              <div class="transaction-type" [ngClass]="{'income-type': transaction.type === 'INCOME', 'expense-type': transaction.type === 'EXPENSE'}">
+                <i [class]="transaction.type === 'INCOME' ? 'pi pi-arrow-up' : 'pi pi-arrow-down'"></i>
+                <span>{{transaction.type}}</span>
+              </div>
+            </td>
+            <td [ngClass]="transaction.type === 'INCOME' ? 'income' : 'expense'">
+              <div class="transaction-amount">
+                {{transaction.type === 'INCOME' ? '+' : '-'}}${{transaction.amount.toFixed(2)}}
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="5">
+              <div class="empty-message">
+                <i class="pi pi-info-circle"></i>
+                <span>No transactions found</span>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+
+  <!-- Financial Insights Section -->
+  <div class="insights-section animate-slide-up" style="animation-delay: 0.8s">
+    <h3 class="section-title">Financial Insights</h3>
+    
+    <div class="insights-container">
+      <div class="insight-card">
+        <div class="insight-icon">
+          <i class="pi pi-trending-up"></i>
+        </div>
+        <div class="insight-content">
+          <h4>Increasing Savings</h4>
+          <p>Your savings have increased 12% compared to last month. Great job!</p>
+        </div>
+      </div>
+      
+      <div class="insight-card">
+        <div class="insight-icon warning">
+          <i class="pi pi-exclamation-triangle"></i>
+        </div>
+        <div class="insight-content">
+          <h4>Budget Alert</h4>
+          <p>You've reached 85% of your Entertainment budget for this month.</p>
+        </div>
+      </div>
+      
+      <div class="insight-card">
+        <div class="insight-icon info">
+          <i class="pi pi-chart-bar"></i>
+        </div>
+        <div class="insight-content">
+          <h4>Spending Pattern</h4>
+          <p>Your highest spending category this month is Food & Groceries.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
