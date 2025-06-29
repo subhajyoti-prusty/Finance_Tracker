@@ -267,16 +267,16 @@
                 <div class="budget-amounts">
                   <div class="amount">
                     <span class="label">Limit</span>
-                    <span class="value">${{budget.limit}}</span>
+                    <span class="value">₹{{budget.limit | number:'1.2-2':'en-IN'}}</span>
                   </div>
                   <div class="amount">
                     <span class="label">Used</span>
-                    <span class="value">${{budget.used}}</span>
+                    <span class="value">₹{{budget.used | number:'1.2-2':'en-IN'}}</span>
                   </div>
                   <div class="amount">
                     <span class="label">Remaining</span>
                     <span class="value" [ngClass]="budget.limit - budget.used >= 0 ? 'positive' : 'negative'">
-                      ${{(budget.limit - budget.used).toFixed(2)}}
+                      ₹{{(budget.limit - budget.used) | number:'1.2-2':'en-IN'}}
                     </span>
                   </div>
                 </div>
@@ -429,9 +429,9 @@
       </div>
       
       <div class="field mb-4">
-        <label for="limit"><i class="pi pi-dollar"></i> Monthly Limit*</label>
+        <label for="limit"><i class="pi pi-rupee"></i> Monthly Limit*</label>
         <div class="p-inputgroup">
-          <span class="p-inputgroup-addon">$</span>
+          <span class="p-inputgroup-addon">₹</span>
           <input id="limit" type="number" pInputText formControlName="limit" placeholder="0.00" min="1" step="1">
         </div>
         <small class="text-danger" *ngIf="budgetForm.get('limit')?.invalid && budgetForm.get('limit')?.touched">
