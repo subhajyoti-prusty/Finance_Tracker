@@ -68,6 +68,10 @@ export class TransactionsComponent implements OnInit {
     category: null as string | null
   };
   
+  // Currency settings
+  currencyCode = 'INR';
+  currencySymbol = '₹';
+  
   constructor(
     private fb: FormBuilder,
     private messageService: MessageService,
@@ -451,5 +455,12 @@ export class TransactionsComponent implements OnInit {
   
   private generateId(): number {
     return Math.max(0, ...this.transactions.map(t => t.id || 0)) + 1;
+  }
+  
+  /**
+   * Format a number as currency with INR symbol
+   */
+  formatCurrency(value: number): string {
+    return `${this.currencySymbol}${value.toFixed(2)}`;
   }
 }

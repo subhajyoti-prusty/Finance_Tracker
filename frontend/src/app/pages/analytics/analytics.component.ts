@@ -9,6 +9,10 @@ import { TransactionCategory, TransactionType } from '../../models/transaction';
   styleUrl: './analytics.component.scss'
 })
 export class AnalyticsComponent implements OnInit {
+  // Currency settings
+  currencyCode: string = 'INR';
+  currencySymbol: string = '₹';
+  
   // Chart data
   incomeVsExpenseData: any;
   categoryBreakdownData: any;
@@ -462,13 +466,9 @@ export class AnalyticsComponent implements OnInit {
               data: [950, 1150, 800, 1350],
               backgroundColor: 'rgba(75, 192, 192, 0.2)',
               borderColor: 'rgb(75, 192, 192)',
-              borderWidth: 1
-            },
-            {
-              label: 'Expenses',
-              data: [750, 850, 700, 950],
-              backgroundColor: 'rgba(255, 99, 132, 0.2)',
-              borderColor: 'rgb(255, 99, 132)',
+              // data: [750, 850, 700, 950],
+              // backgroundColor: 'rgba(255, 99, 132, 0.2)',
+              // borderColor: 'rgb(255, 99, 132)',
               borderWidth: 1
             }
           ]

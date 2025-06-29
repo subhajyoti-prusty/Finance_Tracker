@@ -17,7 +17,7 @@
       </div>
       <div class="card-content">
         <h4>Total Income</h4>
-        <h2 class="income">${{totalIncome.toFixed(2)}}</h2>
+        <h2 class="income">₹{{totalIncome.toFixed(2)}}</h2>
         <div class="card-trend positive">
           <i class="pi pi-arrow-up"></i>
           <span>{{incomeTrend}}% <small>vs last month</small></span>
@@ -31,7 +31,7 @@
       </div>
       <div class="card-content">
         <h4>Total Expenses</h4>
-        <h2 class="expense">${{totalExpenses.toFixed(2)}}</h2>
+        <h2 class="expense">₹{{totalExpenses.toFixed(2)}}</h2>
         <div class="card-trend negative">
           <i class="pi pi-arrow-up"></i>
           <span>{{expenseTrend}}% <small>vs last month</small></span>
@@ -45,7 +45,7 @@
       </div>
       <div class="card-content">
         <h4>Balance</h4>
-        <h2 [ngClass]="balance >= 0 ? 'income' : 'expense'">${{balance.toFixed(2)}}</h2>
+        <h2 [ngClass]="balance >= 0 ? 'income' : 'expense'">₹{{balance.toFixed(2)}}</h2>
         <div class="card-trend" [ngClass]="balanceTrend >= 0 ? 'positive' : 'negative'">
           <i [ngClass]="balanceTrend >= 0 ? 'pi pi-arrow-up' : 'pi pi-arrow-down'"></i>
           <span>{{Math.abs(balanceTrend)}}% <small>vs last month</small></span>
@@ -113,7 +113,7 @@
     <div class="stat-card">
       <div class="stat-icon"><i class="pi pi-chart-bar"></i></div>
       <div class="stat-content">
-        <span class="stat-value">{{stats.average | currency}}</span>
+        <span class="stat-value">{{stats.average | currency:'INR':'symbol':'1.0-0'}}</span>
         <span class="stat-label">Average Transaction</span>
       </div>
     </div>
@@ -121,7 +121,7 @@
     <div class="stat-card">
       <div class="stat-icon"><i class="pi pi-arrow-up"></i></div>
       <div class="stat-content">
-        <span class="stat-value">{{stats.highestAmount | currency}}</span>
+        <span class="stat-value">{{stats.highestAmount | currency:'INR':'symbol':'1.0-0'}}</span>
         <span class="stat-label">Highest Amount</span>
       </div>
     </div>
@@ -181,7 +181,7 @@
           </td>
           <td [ngClass]="transaction.type === 'INCOME' ? 'income' : 'expense'">
             <div class="transaction-amount">
-              {{transaction.type === 'INCOME' ? '+' : '-'}}${{transaction.amount.toFixed(2)}}
+              {{transaction.type === 'INCOME' ? '+' : '-'}}₹{{transaction.amount.toFixed(2)}}
             </div>
           </td>
           <td>
@@ -210,9 +210,10 @@
 </div>
 
 <!-- Add Transaction Dialog -->
-<p-dialog header="Add New Transaction" [(visible)]="displayAddDialog" [modal]="true" [style]="{width: '500px'}" 
+<p-dialog header="Add New Transaction" [(visible)]="displayAddDialog" [modal]="true" [style]="{width: '550px'}" 
          [breakpoints]="{'960px': '75vw', '640px': '90vw'}" [draggable]="false" [resizable]="false"
-         styleClass="transaction-dialog">
+         styleClass="transaction-dialog modern-dialog"
+         [showHeader]="true" appendTo="body">
   <form [formGroup]="transactionForm" (ngSubmit)="saveNewTransaction()">
     <div class="p-fluid">
       <div class="type-selector mb-3">
@@ -234,10 +235,10 @@
       </div>
       
       <div class="field mb-3">
-        <label for="amount"><i class="pi pi-dollar"></i> Amount*</label>
+        <label for="amount"><i class="pi pi-rupee"></i> Amount*</label>
         <div class="p-inputgroup">
-          <span class="p-inputgroup-addon">$</span>
-          <input id="amount" type="number" pInputText formControlName="amount" placeholder="0.00" step="0.01" min="0.01">
+          <span class="p-inputgroup-addon">₹</span>
+          <input id="amount" type="number" pInputText formControlName="amount" placeholder="0.00" step="0.01" min="0.01" class="amount-input">
         </div>
         <small *ngIf="transactionForm.get('amount')?.invalid && transactionForm.get('amount')?.touched" class="p-error">Amount is required and must be greater than 0</small>
       </div>
@@ -267,15 +268,16 @@
       <button pButton pRipple type="button" label="Cancel" icon="pi pi-times" 
              class="p-button-text" (click)="displayAddDialog = false"></button>
       <button pButton pRipple type="submit" label="Save Transaction" icon="pi pi-check" 
-             [disabled]="transactionForm.invalid"></button>
+             [disabled]="transactionForm.invalid" class="p-button-raised p-button-primary save-btn"></button>
     </div>
   </form>
 </p-dialog>
 
 <!-- Edit Transaction Dialog -->
-<p-dialog header="Edit Transaction" [(visible)]="displayEditDialog" [modal]="true" [style]="{width: '500px'}" 
+<p-dialog header="Edit Transaction" [(visible)]="displayEditDialog" [modal]="true" [style]="{width: '550px'}" 
          [breakpoints]="{'960px': '75vw', '640px': '90vw'}" [draggable]="false" [resizable]="false"
-         styleClass="transaction-dialog">
+         styleClass="transaction-dialog modern-dialog"
+         [showHeader]="true" appendTo="body">
   <form [formGroup]="transactionForm" (ngSubmit)="updateTransaction()">
     <div class="p-fluid">
       <div class="type-selector mb-3">
@@ -297,10 +299,10 @@
       </div>
       
       <div class="field mb-3">
-        <label for="editAmount"><i class="pi pi-dollar"></i> Amount*</label>
+        <label for="editAmount"><i class="pi pi-rupee"></i> Amount*</label>
         <div class="p-inputgroup">
-          <span class="p-inputgroup-addon">$</span>
-          <input id="editAmount" type="number" pInputText formControlName="amount" placeholder="0.00" step="0.01" min="0.01">
+          <span class="p-inputgroup-addon">₹</span>
+          <input id="editAmount" type="number" pInputText formControlName="amount" placeholder="0.00" step="0.01" min="0.01" class="amount-input">
         </div>
         <small *ngIf="transactionForm.get('amount')?.invalid && transactionForm.get('amount')?.touched" class="p-error">Amount is required and must be greater than 0</small>
       </div>

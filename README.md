@@ -3,6 +3,7 @@
 ## 📝 Project Overview
 A full-stack Finance Tracker application that helps users monitor their income, expenses, and savings.  
 Built with Angular for the frontend, Java Spring Boot for the backend, and PostgreSQL for database management.
+This application is designed with Indian Rupee (₹) as the default currency and follows Indian formatting standards.
 
 ---
 

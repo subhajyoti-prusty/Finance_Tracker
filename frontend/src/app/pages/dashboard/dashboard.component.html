@@ -45,7 +45,7 @@
       </div>
       <div class="card-content">
         <h4 class="card-title">Total Income</h4>
-        <h2 class="card-value income">${{totalIncome.toFixed(2)}}</h2>
+        <h2 class="card-value income">₹{{totalIncome.toFixed(2)}}</h2>
         <div class="card-trend positive">
           <i class="pi pi-arrow-up"></i>
           <span>8.5% <small>vs last month</small></span>
@@ -62,7 +62,7 @@
       </div>
       <div class="card-content">
         <h4 class="card-title">Total Expenses</h4>
-        <h2 class="card-value expense">${{totalExpense.toFixed(2)}}</h2>
+        <h2 class="card-value expense">₹{{totalExpense.toFixed(2)}}</h2>
         <div class="card-trend negative">
           <i class="pi pi-arrow-up"></i>
           <span>4.2% <small>vs last month</small></span>
@@ -79,7 +79,7 @@
       </div>
       <div class="card-content">
         <h4 class="card-title">Balance</h4>
-        <h2 class="card-value" [ngClass]="balance >= 0 ? 'income' : 'expense'">${{balance.toFixed(2)}}</h2>
+        <h2 class="card-value" [ngClass]="balance >= 0 ? 'income' : 'expense'">₹{{balance.toFixed(2)}}</h2>
         <div class="card-trend" [ngClass]="balanceTrend >= 0 ? 'positive' : 'negative'">
           <i [ngClass]="balanceTrend >= 0 ? 'pi pi-arrow-up' : 'pi pi-arrow-down'"></i>
           <span>{{Math.abs(balanceTrend)}}% <small>vs last month</small></span>
@@ -192,7 +192,7 @@
             </td>
             <td [ngClass]="transaction.type === 'INCOME' ? 'income' : 'expense'">
               <div class="transaction-amount">
-                {{transaction.type === 'INCOME' ? '+' : '-'}}${{transaction.amount.toFixed(2)}}
+                {{transaction.type === 'INCOME' ? '+' : '-'}}₹{{transaction.amount.toFixed(2)}}
               </div>
             </td>
           </tr>

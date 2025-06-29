@@ -1,8 +1,10 @@
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { registerLocaleData } from '@angular/common';
+import localeIn from '@angular/common/locales/en-IN';
 
 // PrimeNG Modules
 import { ButtonModule } from 'primeng/button';
@@ -39,6 +41,9 @@ import { AnalyticsComponent } from './pages/analytics/analytics.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
+
+// Register the locale data
+registerLocaleData(localeIn);
 
 @NgModule({
   declarations: [
@@ -84,7 +89,8 @@ import { FooterComponent } from './shared/footer/footer.component';
   ],  
   providers: [
     MessageService,
-    ConfirmationService
+    ConfirmationService,
+    { provide: LOCALE_ID, useValue: 'en-IN' }
   ],
   bootstrap: [AppComponent]
 })

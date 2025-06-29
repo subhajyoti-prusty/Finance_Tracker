@@ -9,6 +9,10 @@ import { TransactionType } from '../../models/transaction';
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit {
+  // Currency settings
+  currencyCode: string = 'INR';
+  currencySymbol: string = '₹';
+  
   // Time ranges for dropdown
   timeRanges = [
     { label: 'Last 7 Days', value: '7days' },
@@ -307,5 +311,14 @@ export class DashboardComponent implements OnInit {
     
     // Update chart data
     this.initCategoryData();
+  }
+
+  /**
+   * Format a number as currency with the INR symbol
+   * @param amount The amount to format
+   * @returns Formatted currency string
+   */
+  formatCurrency(amount: number): string {
+    return `${this.currencySymbol}${amount.toFixed(2)}`;
   }
 }

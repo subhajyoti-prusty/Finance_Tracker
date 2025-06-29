@@ -2,6 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { TransactionCategory } from '../../models/transaction';
+import { formatCurrency, getCurrencySymbol } from '@angular/common';
+import { registerLocaleData } from '@angular/common';
+import localeIn from '@angular/common/locales/en-IN';
+
+// Register the Indian locale
+registerLocaleData(localeIn);
 
 @Component({
   selector: 'app-settings',
@@ -17,8 +23,8 @@ export class SettingsComponent implements OnInit {
   
   // Appearance settings
   isDarkMode: boolean = false;
-  currencySymbol: string = '$';
-  dateFormat: string = 'MM/dd/yyyy';
+  currencySymbol: string = '₹';
+  dateFormat: string = 'dd/MM/yyyy';
   
   // Languages dropdown
   languages: any[] = [
@@ -32,16 +38,16 @@ export class SettingsComponent implements OnInit {
   ];
   
   availableCurrencies: any[] = [
+    { label: 'Indian Rupee (₹)', value: '₹' },
     { label: 'US Dollar ($)', value: '$' },
     { label: 'Euro (€)', value: '€' },
     { label: 'British Pound (£)', value: '£' },
-    { label: 'Japanese Yen (¥)', value: '¥' },
-    { label: 'Indian Rupee (₹)', value: '₹' }
+    { label: 'Japanese Yen (¥)', value: '¥' }
   ];
   
   availableDateFormats: any[] = [
-    { label: 'MM/DD/YYYY', value: 'MM/dd/yyyy' },
     { label: 'DD/MM/YYYY', value: 'dd/MM/yyyy' },
+    { label: 'MM/DD/YYYY', value: 'MM/dd/yyyy' },
     { label: 'YYYY-MM-DD', value: 'yyyy-MM-dd' }
   ];
   
@@ -383,5 +389,10 @@ export class SettingsComponent implements OnInit {
     const date = new Date();
     date.setDate(date.getDate() - daysAgo);
     return date.toLocaleDateString();
+  }
+  
+  // Format currency value based on the selected currency symbol
+  formatCurrency(value: number): string {
+    return formatCurrency(value, 'en-IN', this.currencySymbol);
   }
 }
