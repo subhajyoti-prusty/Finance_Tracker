@@ -1,0 +1,69 @@
+<header class="app-header" [class.dark-mode]="isDarkMode">
+  <div class="header-container">
+    <div class="logo-section">
+      <a [routerLink]="['/']" class="logo-link">
+        <div class="logo-wrapper">
+          <i [class]="logoIcon + ' logo-icon'"></i>
+        </div>
+        <span class="logo-text">{{brandName}}</span>
+      </a>
+    </div>
+    
+    <p-menubar [model]="" styleClass="custom-menubar">
+      <ng-template pTemplate="end">
+        <div class="header-actions">
+          <!-- Date Component with calendar icon and formatted date -->
+          <div class="date-display">
+            <i class="pi pi-calendar date-icon"></i>
+            <span class="date-text">{{currentDate | date:'EEE, MMM dd, yyyy'}}</span>
+          </div>
+          
+          <!-- Notifications Button -->
+          <ng-container *ngIf="showNotifications">
+            <div class="notification-wrapper">
+              <button pButton type="button" 
+                     icon="pi pi-bell" 
+                     class="p-button-rounded p-button-text notification-button"
+                     pTooltip="Notifications">
+              </button>
+              <span *ngIf="notificationCount > 0" class="notification-badge">{{notificationCount}}</span>
+            </div>
+          </ng-container>
+          
+          <!-- Theme Toggle Button with animation -->
+          <ng-container *ngIf="showThemeToggle">
+            <button pButton type="button"
+                   [icon]="isDarkMode ? 'pi pi-sun' : 'pi pi-moon'"
+                   class="p-button-rounded p-button-text theme-toggle"
+                   [ngClass]="{'rotate-icon': isDarkMode}"
+                   pTooltip="{{isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}}"
+                   (click)="toggleDarkMode()">
+            </button>
+          </ng-container>
+          
+          <!-- User Profile Avatar -->
+          <ng-container *ngIf="showUserProfile">
+            <div class="user-profile">
+              <p-avatar icon="pi pi-user"
+                       styleClass="user-avatar"
+                       shape="circle"
+                       size="large"
+                       [style]="{'cursor': 'pointer'}"
+                       [pTooltip]="'User Profile'">
+              </p-avatar>
+              <div class="user-name">John Doe</div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-template>
+    </p-menubar>
+  </div>
+  
+  <!-- Floating Search Bar -->
+  <div class="search-container">
+    <div class="search-wrapper">
+      <i class="pi pi-search search-icon"></i>
+      <input type="text" pInputText placeholder="Search transactions, categories..." class="search-input">
+    </div>
+  </div>
+</header>

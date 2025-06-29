@@ -1,0 +1,225 @@
+<div class="analytics-container animate-fade-in">
+  <div class="page-header">
+    <div class="header-content">
+      <h2 class="page-title">Financial Analytics</h2>
+      <p class="subtitle">Visualize and analyze your financial data</p>
+    </div>
+    <div class="header-actions">
+      <div class="time-period-selector">
+        <p-dropdown [options]="timePeriods" [(ngModel)]="selectedTimePeriod" 
+                   optionLabel="label" optionValue="value"
+                   (onChange)="onTimePeriodChange()" styleClass="time-dropdown"></p-dropdown>
+      </div>
+      <button pButton pRipple label="Download Report" icon="pi pi-download" class="p-button-outlined" (click)="downloadReport()"></button>
+    </div>
+  </div>
+  
+  <!-- Financial Summary Cards -->
+  <div class="summary-cards animate-slide-up" style="animation-delay: 0.1s">
+    <div class="summary-card income-card">
+      <div class="card-icon-wrapper">
+        <i class="pi pi-arrow-up"></i>
+      </div>
+      <div class="card-content">
+        <h4>Total Income</h4>
+        <h2 class="income">₹{{totalIncome.toLocaleString()}}</h2>
+        <div class="card-trend positive">
+          <i class="pi pi-arrow-up"></i>
+          <span>{{incomeTrend}}% <small>vs previous period</small></span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="summary-card expense-card">
+      <div class="card-icon-wrapper">
+        <i class="pi pi-arrow-down"></i>
+      </div>
+      <div class="card-content">
+        <h4>Total Expenses</h4>
+        <h2 class="expense">₹{{totalExpenses.toLocaleString()}}</h2>
+        <div class="card-trend negative">
+          <i class="pi pi-arrow-up"></i>
+          <span>{{expenseTrend}}% <small>vs previous period</small></span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="summary-card savings-card">
+      <div class="card-icon-wrapper">
+        <i class="pi pi-percentage"></i>
+      </div>
+      <div class="card-content">
+        <h4>Savings Rate</h4>
+        <h2 class="savings">{{savingsRate}}%</h2>
+        <div class="savings-progress">
+          <div class="progress-bar">
+            <div class="progress-value" [style.width.%]="savingsRate"></div>
+          </div>
+          <span class="progress-text">Goal: 25%</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="summary-card balance-card">
+      <div class="card-icon-wrapper">
+        <i class="pi pi-wallet"></i>
+      </div>
+      <div class="card-content">
+        <h4>Net Balance</h4>
+        <h2 class="income">₹{{(totalIncome - totalExpenses).toLocaleString()}}</h2>
+        <div class="card-trend positive">
+          <i class="pi pi-arrow-up"></i>
+          <span>{{balanceTrend}}% <small>vs previous period</small></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Main Charts Section -->
+  <div class="charts-container animate-slide-up" style="animation-delay: 0.2s">
+    <div class="chart-card main-chart">
+      <div class="card-header">
+        <h3>Income vs. Expenses</h3>
+        <div class="card-actions">
+          <p-selectButton [options]="chartViewOptions" [(ngModel)]="selectedChartView" 
+                         (onChange)="onChartViewChange()" optionLabel="label"></p-selectButton>
+        </div>
+      </div>
+      <div class="card-body">
+        <p-chart type="bar" [data]="incomeVsExpenseData" [options]="chartOptions"></p-chart>
+      </div>
+    </div>
+    
+    <div class="chart-card pie-chart">
+      <div class="card-header">
+        <h3>Expense Breakdown</h3>
+        <div class="card-actions">
+          <p-dropdown [options]="expenseCategories" [(ngModel)]="selectedExpenseCategory" 
+                     placeholder="All Categories" (onChange)="updateCategoryChart()"
+                     styleClass="p-dropdown-sm"></p-dropdown>
+        </div>
+      </div>
+      <div class="card-body">
+        <p-chart type="doughnut" [data]="categoryBreakdownData" [options]="pieChartOptions"></p-chart>
+      </div>
+      <div class="legend-container">
+        <ng-container *ngFor="let item of categoryBreakdownData.datasets[0].data; let i = index">
+          <div class="legend-item">
+            <div class="color-box" [style.background-color]="categoryBreakdownData.datasets[0].backgroundColor[i]"></div>
+            <div class="legend-label">{{categoryBreakdownData.labels[i]}}</div>
+            <div class="legend-value">${{categoryAmounts[i].toLocaleString()}}</div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Monthly Trend Chart -->
+  <div class="trend-chart-container animate-slide-up" style="animation-delay: 0.3s">
+    <div class="chart-card">
+      <div class="card-header">
+        <h3>Financial Trends</h3>
+        <div class="card-actions">
+          <p-dropdown [options]="trendOptions" [(ngModel)]="selectedTrendOption" 
+                     (onChange)="updateTrendChart()" styleClass="p-dropdown-sm"></p-dropdown>
+        </div>
+      </div>
+      <div class="card-body">
+        <p-chart type="line" [data]="monthlyTrendData" [options]="lineChartOptions"></p-chart>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Top Spending Categories -->
+  <div class="spending-categories-container animate-slide-up" style="animation-delay: 0.4s">
+    <div class="chart-card">
+      <div class="card-header">
+        <h3>Top Spending Categories</h3>
+        <div class="card-actions">
+          <span class="total-label">Total Expenses: <strong>${{totalExpenses.toLocaleString()}}</strong></span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="category-list">
+          <div class="category-item" *ngFor="let category of topSpendingCategories">
+            <div class="category-details">
+              <div class="category-icon" [ngClass]="'category-' + category.category.toLowerCase()">
+                <i [class]="getCategoryIcon(category.category)"></i>
+              </div>
+              <div class="category-info">
+                <div class="category-name">{{category.category}}</div>
+                <div class="category-amount expense">${{category.amount.toLocaleString()}}</div>
+              </div>
+              <div class="category-percentage">{{category.percentage}}%</div>
+            </div>
+            <div class="category-progress">
+              <div class="progress-bar" [style.width.%]="category.percentage"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Financial Insights -->
+  <div class="insights-container animate-slide-up" style="animation-delay: 0.5s">
+    <h3 class="section-title">Financial Insights</h3>
+    
+    <div class="insights-grid">
+      <div class="insight-card">
+        <div class="insight-icon">
+          <i class="pi pi-chart-line"></i>
+        </div>
+        <div class="insight-content">
+          <h4>Monthly Savings Trend</h4>
+          <p>Your savings have increased by 5% compared to last month. Keep up the good work!</p>
+          <div class="insight-action">
+            <button pButton pRipple type="button" label="View Details" class="p-button-sm p-button-text"></button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="insight-card warning">
+        <div class="insight-icon">
+          <i class="pi pi-exclamation-triangle"></i>
+        </div>
+        <div class="insight-content">
+          <h4>High Spending Alert</h4>
+          <p>Your entertainment spending is 15% higher than your monthly average. Consider adjusting your budget.</p>
+          <div class="insight-action">
+            <button pButton pRipple type="button" label="Set Budget" class="p-button-sm p-button-text"></button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="insight-card success">
+        <div class="insight-icon">
+          <i class="pi pi-check-circle"></i>
+        </div>
+        <div class="insight-content">
+          <h4>Budget Goal Achievement</h4>
+          <p>You're on track to meet your savings goal for this quarter. You've saved 68% of your target amount.</p>
+          <div class="insight-progress">
+            <div class="progress-bar">
+              <div class="progress-value" style="width: 68%"></div>
+            </div>
+            <span class="progress-text">68% Complete</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="insight-card info">
+        <div class="insight-icon">
+          <i class="pi pi-chart-bar"></i>
+        </div>
+        <div class="insight-content">
+          <h4>Spending Pattern</h4>
+          <p>Your highest spending days are typically near the beginning of the month. Consider spreading expenses more evenly.</p>
+          <div class="insight-action">
+            <button pButton pRipple type="button" label="See Pattern" class="p-button-sm p-button-text"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

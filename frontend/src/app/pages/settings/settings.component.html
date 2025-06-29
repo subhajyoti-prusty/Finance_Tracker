@@ -1,0 +1,450 @@
+<div class="settings-container animate-fade-in">
+  <div class="page-header">
+    <div class="header-content">
+      <h2 class="page-title">Account Settings</h2>
+      <p class="subtitle">Manage your account preferences and settings</p>
+    </div>
+  </div>
+  
+  <div class="settings-wrapper">
+    <div class="settings-sidebar animate-slide-up" style="animation-delay: 0.1s">
+      <div class="user-profile">
+        <div class="avatar-container">
+          <p-avatar icon="pi pi-user" styleClass="avatar-xl" size="xlarge"></p-avatar>
+          <button pButton pRipple icon="pi pi-camera" class="p-button-rounded p-button-secondary change-avatar-btn"></button>
+        </div>
+        <div class="user-info">
+          <h3>{{profileForm.get('firstName')?.value}} {{profileForm.get('lastName')?.value}}</h3>
+          <span>{{profileForm.get('email')?.value}}</span>
+        </div>
+      </div>
+      
+      <div class="settings-nav">
+        <ul>
+          <li [ngClass]="{'active': activeTab === 0}" (click)="activeTab = 0">
+            <i class="pi pi-user"></i>
+            <span>Profile</span>
+          </li>
+          <li [ngClass]="{'active': activeTab === 1}" (click)="activeTab = 1">
+            <i class="pi pi-palette"></i>
+            <span>Appearance</span>
+          </li>
+          <li [ngClass]="{'active': activeTab === 2}" (click)="activeTab = 2">
+            <i class="pi pi-bell"></i>
+            <span>Notifications</span>
+          </li>
+          <li [ngClass]="{'active': activeTab === 3}" (click)="activeTab = 3">
+            <i class="pi pi-chart-pie"></i>
+            <span>Budgets</span>
+          </li>
+          <li [ngClass]="{'active': activeTab === 4}" (click)="activeTab = 4">
+            <i class="pi pi-lock"></i>
+            <span>Security</span>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="settings-help">
+        <div class="help-icon">
+          <i class="pi pi-question-circle"></i>
+        </div>
+        <div class="help-content">
+          <h4>Need Help?</h4>
+          <p>Check our documentation or contact support.</p>
+          <button pButton pRipple type="button" label="Support Center" class="p-button-text"></button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="settings-content animate-slide-up" style="animation-delay: 0.2s">
+      <div [ngSwitch]="activeTab">
+        <!-- Profile Settings -->
+        <div *ngSwitchCase="0" class="settings-panel">
+          <div class="panel-header">
+            <h3>Profile Information</h3>
+            <p>Manage your personal information and contact details</p>
+          </div>
+          
+          <div class="panel-body">
+            <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="firstName">First Name</label>
+                  <input id="firstName" pInputText formControlName="firstName" />
+                  <small class="text-danger" *ngIf="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched">
+                    First name is required
+                  </small>
+                </div>
+                <div class="form-group">
+                  <label for="lastName">Last Name</label>
+                  <input id="lastName" pInputText formControlName="lastName" />
+                  <small class="text-danger" *ngIf="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched">
+                    Last name is required
+                  </small>
+                </div>
+                <div class="form-group full-width">
+                  <label for="email">Email Address</label>
+                  <input id="email" pInputText formControlName="email" />
+                  <small class="text-danger" *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">
+                    Please enter a valid email address
+                  </small>
+                </div>
+                <div class="form-group">
+                  <label for="phone">Phone Number</label>
+                  <input id="phone" pInputText formControlName="phone" />
+                </div>
+                <div class="form-group">
+                  <label for="language">Preferred Language</label>
+                  <p-dropdown id="language" [options]="languages" formControlName="language"
+                             optionLabel="label" optionValue="value" styleClass="w-100"></p-dropdown>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button pButton pRipple type="submit" label="Save Changes" icon="pi pi-check"
+                       [disabled]="profileForm.invalid || !profileForm.dirty" class="save-button"></button>
+              </div>
+            </form>
+          </div>
+        </div>
+        
+        <!-- Appearance Settings -->
+        <div *ngSwitchCase="1" class="settings-panel">
+          <div class="panel-header">
+            <h3>Appearance</h3>
+            <p>Customize how Finance Tracker looks and feels</p>
+          </div>
+          
+          <div class="panel-body">
+            <div class="setting-group">
+              <h4>Theme</h4>
+              
+              <div class="theme-selector">
+                <div class="theme-option" [ngClass]="{'active': !isDarkMode}" (click)="selectTheme('light')">
+                  <div class="theme-preview light-preview">
+                    <div class="theme-header"></div>
+                    <div class="theme-content"></div>
+                  </div>
+                  <div class="theme-name">Light</div>
+                </div>
+                
+                <div class="theme-option" [ngClass]="{'active': isDarkMode}" (click)="selectTheme('dark')">
+                  <div class="theme-preview dark-preview">
+                    <div class="theme-header"></div>
+                    <div class="theme-content"></div>
+                  </div>
+                  <div class="theme-name">Dark</div>
+                </div>
+              </div>
+              
+              <div class="toggle-setting">
+                <div class="toggle-label">
+                  <span>Dark Mode</span>
+                  <small>Switch between light and dark themes</small>
+                </div>
+                <p-inputSwitch [(ngModel)]="isDarkMode" (onChange)="toggleDarkMode()"></p-inputSwitch>
+              </div>
+            </div>
+            
+            <div class="setting-group">
+              <h4>Regional Settings</h4>
+              
+              <div class="form-group">
+                <label for="currency">Currency</label>
+                <p-dropdown id="currency" [options]="availableCurrencies" [(ngModel)]="currencySymbol" 
+                           optionLabel="label" optionValue="value" styleClass="w-100"></p-dropdown>
+              </div>
+              
+              <div class="form-group">
+                <label for="dateFormat">Date Format</label>
+                <p-dropdown id="dateFormat" [options]="availableDateFormats" [(ngModel)]="dateFormat" 
+                           optionLabel="label" optionValue="value" styleClass="w-100"></p-dropdown>
+              </div>
+            </div>
+            
+            <div class="form-actions">
+              <button pButton pRipple type="button" label="Save Appearance Settings" icon="pi pi-check"
+                     (click)="saveAppearanceSettings()" class="save-button"></button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Notification Settings -->
+        <div *ngSwitchCase="2" class="settings-panel">
+          <div class="panel-header">
+            <h3>Notification Settings</h3>
+            <p>Manage how and when you receive notifications</p>
+          </div>
+          
+          <div class="panel-body">
+            <div class="setting-group">
+              <h4>Email Notifications</h4>
+              
+              <div class="toggle-setting">
+                <div class="toggle-label">
+                  <span>Email Notifications</span>
+                  <small>Receive notifications via email</small>
+                </div>
+                <p-inputSwitch [(ngModel)]="emailNotifications"></p-inputSwitch>
+              </div>
+              
+              <div class="toggle-setting" [ngClass]="{'disabled': !emailNotifications}">
+                <div class="toggle-label">
+                  <span>Weekly Finance Report</span>
+                  <small>Receive a weekly summary of your finances</small>
+                </div>
+                <p-inputSwitch [(ngModel)]="weeklyReportEnabled" [disabled]="!emailNotifications"></p-inputSwitch>
+              </div>
+              
+              <div class="toggle-setting" [ngClass]="{'disabled': !emailNotifications}">
+                <div class="toggle-label">
+                  <span>Monthly Finance Report</span>
+                  <small>Receive a detailed monthly financial analysis</small>
+                </div>
+                <p-inputSwitch [(ngModel)]="monthlyReportEnabled" [disabled]="!emailNotifications"></p-inputSwitch>
+              </div>
+            </div>
+            
+            <div class="setting-group">
+              <h4>App Notifications</h4>
+              
+              <div class="toggle-setting">
+                <div class="toggle-label">
+                  <span>Push Notifications</span>
+                  <small>Receive in-app notifications</small>
+                </div>
+                <p-inputSwitch [(ngModel)]="pushNotifications"></p-inputSwitch>
+              </div>
+              
+              <div class="toggle-setting" [ngClass]="{'disabled': !pushNotifications}">
+                <div class="toggle-label">
+                  <span>Budget Alerts</span>
+                  <small>Get notified when you're close to your budget limits</small>
+                </div>
+                <p-inputSwitch [(ngModel)]="budgetAlertEnabled" [disabled]="!pushNotifications"></p-inputSwitch>
+              </div>
+              
+              <div class="toggle-setting" [ngClass]="{'disabled': !pushNotifications}">
+                <div class="toggle-label">
+                  <span>Unusual Activity</span>
+                  <small>Get notified about unusual spending patterns</small>
+                </div>
+                <p-inputSwitch [(ngModel)]="unusualActivityAlertEnabled" [disabled]="!pushNotifications"></p-inputSwitch>
+              </div>
+            </div>
+            
+            <div class="form-actions">
+              <button pButton pRipple type="button" label="Save Notification Settings" icon="pi pi-check"
+                     (click)="saveNotificationSettings()" class="save-button"></button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Budget Settings -->
+        <div *ngSwitchCase="3" class="settings-panel">
+          <div class="panel-header">
+            <h3>Budget Management</h3>
+            <p>Set and track spending limits for different categories</p>
+            <button pButton pRipple label="Add New Budget" icon="pi pi-plus" (click)="openNewBudgetDialog()"
+                   class="p-button-outlined header-button"></button>
+          </div>
+          
+          <div class="panel-body">
+            <div class="budgets-grid">
+              <div class="budget-card" *ngFor="let budget of budgets">
+                <div class="budget-header">
+                  <div class="budget-category">
+                    <i [class]="getCategoryIcon(budget.category)"></i>
+                    <h4>{{getCategoryLabel(budget.category)}}</h4>
+                  </div>
+                  <div class="budget-actions">
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-text" 
+                           (click)="openEditBudgetDialog(budget)" pTooltip="Edit"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger" 
+                           (click)="deleteBudget(budget)" pTooltip="Delete"></button>
+                  </div>
+                </div>
+                
+                <div class="budget-amounts">
+                  <div class="amount">
+                    <span class="label">Limit</span>
+                    <span class="value">₹{{budget.limit | number:'1.2-2':'en-IN'}}</span>
+                  </div>
+                  <div class="amount">
+                    <span class="label">Used</span>
+                    <span class="value">₹{{budget.used | number:'1.2-2':'en-IN'}}</span>
+                  </div>
+                  <div class="amount">
+                    <span class="label">Remaining</span>
+                    <span class="value" [ngClass]="budget.limit - budget.used >= 0 ? 'positive' : 'negative'">
+                      ₹{{(budget.limit - budget.used) | number:'1.2-2':'en-IN'}}
+                    </span>
+                  </div>
+                </div>
+                
+                <div class="budget-progress">
+                  <p-progressBar [value]="calculateProgress(budget.used, budget.limit)" 
+                               [showValue]="false" 
+                               [styleClass]="getProgressSeverityClass(calculateProgress(budget.used, budget.limit))">
+                  </p-progressBar>
+                  <span class="progress-label">
+                    <span [ngClass]="getTextSeverityClass(calculateProgress(budget.used, budget.limit))">
+                      {{calculateProgress(budget.used, budget.limit)}}% used
+                    </span>
+                    
+                    <span class="days-remaining">
+                      {{calculateDaysLeft()}} days remaining
+                    </span>
+                  </span>
+                </div>
+              </div>
+              
+              <div class="empty-state" *ngIf="budgets.length === 0">
+                <div class="empty-icon">
+                  <i class="pi pi-chart-pie"></i>
+                </div>
+                <h3>No Budgets Created</h3>
+                <p>Start managing your spending by creating budget limits for different categories.</p>
+                <button pButton pRipple label="Create Your First Budget" icon="pi pi-plus" 
+                       (click)="openNewBudgetDialog()"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Security Settings -->
+        <div *ngSwitchCase="4" class="settings-panel">
+          <div class="panel-header">
+            <h3>Security Settings</h3>
+            <p>Manage your account security and password</p>
+          </div>
+          
+          <div class="panel-body">
+            <div class="setting-group">
+              <h4>Password</h4>
+              <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+                <div class="form-group">
+                  <label for="currentPassword">Current Password</label>
+                  <input id="currentPassword" type="password" pInputText formControlName="currentPassword" />
+                  <small class="text-danger" *ngIf="passwordForm.get('currentPassword')?.invalid && passwordForm.get('currentPassword')?.touched">
+                    Current password is required
+                  </small>
+                </div>
+                
+                <div class="form-group">
+                  <label for="newPassword">New Password</label>
+                  <input id="newPassword" type="password" pInputText formControlName="newPassword" />
+                  <small class="text-danger" *ngIf="passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched">
+                    Password must be at least 8 characters
+                  </small>
+                </div>
+                
+                <div class="form-group">
+                  <label for="confirmPassword">Confirm New Password</label>
+                  <input id="confirmPassword" type="password" pInputText formControlName="confirmPassword" />
+                  <small class="text-danger" *ngIf="passwordForm.get('confirmPassword')?.invalid && passwordForm.get('confirmPassword')?.touched">
+                    Passwords do not match
+                  </small>
+                </div>
+                
+                <div class="form-actions">
+                  <button pButton pRipple type="submit" label="Change Password" icon="pi pi-lock"
+                         [disabled]="passwordForm.invalid" class="save-button"></button>
+                </div>
+              </form>
+            </div>
+            
+            <div class="setting-group">
+              <h4>Two-Factor Authentication</h4>
+              
+              <div class="toggle-setting">
+                <div class="toggle-label">
+                  <span>Two-Factor Authentication</span>
+                  <small>Add an extra layer of security to your account</small>
+                </div>
+                <p-inputSwitch [(ngModel)]="twoFactorEnabled" (onChange)="toggleTwoFactor()"></p-inputSwitch>
+              </div>
+              
+              <div class="info-box" *ngIf="twoFactorEnabled">
+                <i class="pi pi-check-circle"></i>
+                <div class="info-content">
+                  <h5>Two-factor authentication is enabled</h5>
+                  <p>Your account is now more secure. You'll be asked for a verification code when signing in from a new device.</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="setting-group">
+              <h4>Login Sessions</h4>
+              
+              <div class="sessions-list">
+                <div class="session-item current">
+                  <div class="device-icon">
+                    <i class="pi pi-desktop"></i>
+                  </div>
+                  <div class="session-details">
+                    <div class="device">Windows PC - Chrome</div>
+                    <div class="session-meta">Current session • Last accessed {{getCurrentDate()}}</div>
+                  </div>
+                </div>
+                
+                <div class="session-item">
+                  <div class="device-icon">
+                    <i class="pi pi-mobile"></i>
+                  </div>
+                  <div class="session-details">
+                    <div class="device">iPhone - Safari</div>
+                    <div class="session-meta">Last accessed {{getPastDate(2)}}</div>
+                  </div>
+                  <button pButton pRipple icon="pi pi-times" class="p-button-rounded p-button-text p-button-danger"
+                         pTooltip="End Session"></button>
+                </div>
+              </div>
+              
+              <div class="form-actions">
+                <button pButton pRipple type="button" label="Log Out All Other Sessions" icon="pi pi-sign-out"
+                       (click)="logOutAllSessions()" class="p-button-outlined p-button-danger"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Budget Dialog -->
+<p-dialog header="{{selectedBudget ? 'Edit Budget' : 'Add New Budget'}}" [(visible)]="displayBudgetDialog" 
+         [modal]="true" [style]="{width: '450px'}" [breakpoints]="{'960px': '75vw', '640px': '90vw'}"
+         styleClass="budget-dialog enhanced-dialog">
+  <form [formGroup]="budgetForm" (ngSubmit)="saveBudget()">
+    <div class="p-fluid">
+      <div class="field mb-3">
+        <label for="category"><i class="pi pi-tag"></i> Category*</label>
+        <p-dropdown id="category" [options]="categories" formControlName="category" 
+                   placeholder="Select Category" optionLabel="label" optionValue="value"
+                   [filter]="true" filterBy="label" styleClass="w-100" [disabled]="!!selectedBudget"></p-dropdown>
+        <small class="text-danger" *ngIf="budgetForm.get('category')?.invalid && budgetForm.get('category')?.touched">
+          Category is required
+        </small>
+      </div>
+      
+      <div class="field mb-4">
+        <label for="limit"><i class="pi pi-rupee"></i> Monthly Limit*</label>
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">₹</span>
+          <input id="limit" type="number" pInputText formControlName="limit" placeholder="0.00" min="1" step="1">
+        </div>
+        <small class="text-danger" *ngIf="budgetForm.get('limit')?.invalid && budgetForm.get('limit')?.touched">
+          Budget limit must be greater than 0
+        </small>
+      </div>
+    </div>
+    
+    <div class="dialog-footer">
+      <button pButton pRipple type="button" label="Cancel" icon="pi pi-times" 
+             class="p-button-text" (click)="displayBudgetDialog = false"></button>
+      <button pButton pRipple type="submit" label="Save Budget" icon="pi pi-check" 
+             [disabled]="!budgetForm.valid"></button>
+    </div>
+  </form>
+</p-dialog>

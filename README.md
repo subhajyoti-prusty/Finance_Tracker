@@ -3,6 +3,7 @@
 ## 📝 Project Overview
 A full-stack Finance Tracker application that helps users monitor their income, expenses, and savings.  
 Built with Angular for the frontend, Java Spring Boot for the backend, and PostgreSQL for database management.
+This application is designed with Indian Rupee (₹) as the default currency and follows Indian formatting standards.
 
 ---
 
@@ -25,6 +26,8 @@ finance-tracker/
 │   │   ├── controller/
 │   │   ├── service/
 │   │   ├── model/
+│   │   │   ├── User.java
+│   │   │   └── Transaction.java
 │   │   ├── repository/
 │   │   └── config/
 │   └── src/main/resources/
@@ -33,8 +36,21 @@ finance-tracker/
     ├── src/app/
     │   ├── components/
     │   ├── services/
+    │   │   ├── auth.service.ts
+    │   │   └── transaction.service.ts
     │   ├── models/
-    │   └── pages/
+    │   │   ├── transaction.ts
+    │   │   └── user.ts
+    │   ├── pages/
+    │   │   ├── dashboard/
+    │   │   ├── transactions/
+    │   │   ├── analytics/
+    │   │   └── settings/
+    │   ├── app-routing.module.ts
+    │   ├── app.component.html
+    │   ├── app.component.scss
+    │   ├── app.component.ts
+    │   └── app.module.ts
     └── angular.json
 ```
 
@@ -54,23 +70,17 @@ finance-tracker/
 
 ## ⚙️ Setup Instructions
 
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/your-username/finance-tracker.git
-cd finance-tracker
-```
-
-### 2. Backend Setup (Spring Boot)
+### 1. Backend Setup (Spring Boot)
 
 - Navigate to the `backend` folder.
-- Configure `application.properties` with your PostgreSQL database credentials:
+- Make sure you have PostgreSQL installed and running.
+- Create a new database named `finance_tracker`.
+- Configure `application.properties` with your PostgreSQL database credentials if different from default:
 
 ```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/yourdbname
-spring.datasource.username=yourusername
-spring.datasource.password=yourpassword
-spring.jpa.hibernate.ddl-auto=update
+spring.datasource.url=jdbc:postgresql://localhost:5432/finance_tracker
+spring.datasource.username=postgres
+spring.datasource.password=postgres
 ```
 
 - Run the backend:
@@ -79,7 +89,7 @@ spring.jpa.hibernate.ddl-auto=update
 ./mvnw spring-boot:run
 ```
 
-### 3. Frontend Setup (Angular)
+### 2. Frontend Setup (Angular)
 
 - Navigate to the `frontend` folder.
 - Install dependencies:
@@ -95,6 +105,34 @@ ng serve
 ```
 
 - Visit: `http://localhost:4200`
+
+---
+
+## 👨‍💻 Development
+
+### Adding New Components
+
+```bash
+ng generate component components/your-component-name
+```
+
+### Adding New Services
+
+```bash
+ng generate service services/your-service-name
+```
+
+### Adding New Models
+
+```bash
+ng generate interface models/your-model-name
+```
+
+---
+
+## 🔒 Authentication
+
+This application uses JWT (JSON Web Token) for authentication. The token is stored in the browser's local storage and sent with each request to the API.
 
 ---
 
